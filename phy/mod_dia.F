@@ -1716,7 +1716,7 @@ c
 
 
 
-      subroutine diaout(iogrp,m,n,mm,nn,k1m,k1n)
+      subroutine diaout(iogrp,m,n,mm,nn,k1m,k1n,nctw)
 c
 c --- -------------------------------------
 c --- Write high frequency diagnostic fields
@@ -1724,7 +1724,9 @@ c --- -------------------------------------
 c
       implicit none
 c
-      integer m,n,mm,nn,k1m,k1n
+      integer, intent(in) :: m,n,mm,nn,k1m,k1n
+      logical, intent(in), optional :: nctw
+      logical :: nctime_write = .true.
 c
 #include "common_blocks.h"
 #include "common_clndr.h"
@@ -2176,7 +2178,10 @@ c
 c
        call definevar(irec(iogrp),iogrp,cmpflg,timeunits,calendar)
 
-       call nctime(datenum,calendar,timeunits,startdate)
+      if ( present(nctw) ) then
+         nctime_write = nctw
+      end if
+      if (nctime_write) call nctime(datenum,calendar,timeunits,startdate)
 c
 c --- write auxillary dimension information 
       if (irec(iogrp).eq.1) then
