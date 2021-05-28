@@ -676,7 +676,7 @@ c --- Store 3d level fields
 #ifdef trc_passive
       call wrtlvl(jlvlpasstrc(iogrp),LVL_PASSTRC(iogrp),
      .     rnacc,0.,cmpflg,'passtrclvl',
-     .     Passive tracer',' ','-')
+     .     'Passive tracer',' ','-')
 #endif
 c
 c --- Store sediment fields
