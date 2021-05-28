@@ -129,7 +129,7 @@
       INTEGER   :: restdtoce                         !  time step number from bgc ocean file
       INTEGER   :: idate(5),i,j,k
       character :: rstfnm*256
-      logical   :: lread_cfc,lread_nat,lread_iso,lread_atm
+      logical   :: lread_cfc,lread_nat,lread_iso,lread_atm,lread_passtrc
 #ifdef cisonew
       REAL :: rco213,rco214,alpha14,beta13,beta14,d13C_atm,d14cat
 #endif
@@ -329,6 +329,26 @@
       ENDIF
 #endif
 
+! Find out whether to restart passive tracers
+#ifdef trc_passive
+      lread_passtrc=.true.
+      IF(IOTYPE==0) THEN
+         if(mnproc==1) ncstat=nf90_inq_varid(ncid,'passtrc',ncvarid)
+         call xcbcst(ncstat)
+         if(ncstat.ne.nf90_noerr) lread_passtrc=.false.
+      ELSE IF(IOTYPE==1) THEN
+#ifdef PNETCDF
+         ncstat=nfmpi_inq_varid(ncid,'passtrc',ncvarid)
+         if(ncstat.ne.nf_noerr) lread_passtrc=.false.
+#endif
+      ENDIF
+      IF(mnproc==1 .and. .not. lread_passtrc) THEN
+         WRITE(io_stdo_bgc,*) ' '
+         WRITE(io_stdo_bgc,*) 'AUFR_BGC info: Passive tracers not in restart file, '
+         WRITE(io_stdo_bgc,*) ' Passive tracers initialised to 1.'
+      ENDIF
+#endif
+
 ! Find out whether to restart marine carbon isotopes
 #ifdef cisonew
       lread_iso=.true.
@@ -433,6 +453,11 @@
       CALL read_netcdf_var(ncid,'alkali',locetra(1,1,1,inatalkali),2*kpke,0,iotype)
       CALL read_netcdf_var(ncid,'calciu',locetra(1,1,1,inatcalc),2*kpke,0,iotype)
       CALL read_netcdf_var(ncid,'hi',nathi(1,1,1),kpke,0,iotype)
+      ENDIF
+#endif
+#ifdef trc_passive
+      IF(lread_passtrc) THEN
+         CALL read_netcdf_var(ncid,'passtrc',locetra(1,1,1,ipasstrc),2*kpke,0,iotype)
       ENDIF
 #endif
 !
