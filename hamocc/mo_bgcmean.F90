@@ -406,7 +406,11 @@
      &          jlvlnatomegaa = 0 ,                                     &
      &          jlvlnatomegac = 0 
 
-      INTEGER, SAVE :: nbgcm3d,nbgcm3dlvl 
+      INTEGER, DIMENSION(nbgcmax), SAVE ::                              &
+     &          jpasstrc      = 0 ,                                     &
+     &          jlvlpasstrc   = 0
+
+      INTEGER, SAVE :: nbgcm3d,nbgcm3dlvl
 
 !----------------------------------------------------------------
 ! sediment

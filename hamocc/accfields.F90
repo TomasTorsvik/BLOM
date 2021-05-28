@@ -251,7 +251,9 @@
       call acclyr(jcfc12,ocetra(1,1,1,icfc12),pddpo,1)
       call acclyr(jsf6,ocetra(1,1,1,isf6),pddpo,1)
 #endif
-
+#ifdef trc_passive
+      call acclyr(jpasstrc,ocetra(1,1,1,ipasstrc),pddpo,1)
+#endif
 
 ! Accumulate level diagnostics
       IF (SUM(jlvlphyto+jlvlgrazer+jlvlphosph+jlvloxygen+jlvliron+      &
@@ -322,6 +324,9 @@
           call acclvl(jlvlcfc11,ocetra(1,1,1,icfc11),k,ind1,ind2,wghts)
           call acclvl(jlvlcfc12,ocetra(1,1,1,icfc12),k,ind1,ind2,wghts)
           call acclvl(jlvlsf6,ocetra(1,1,1,isf6),k,ind1,ind2,wghts)
+#endif
+#ifdef trc_passive
+          call acclvl(jlvlpasstrc,ocetra(1,1,1,ipasstrc),k,ind1,ind2,wghts)
 #endif
         ENDDO
       ENDIF
