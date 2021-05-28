@@ -128,9 +128,18 @@
      &                      inatalkali = -1,                            &
      &                      inatcalc   = -1
 #endif
+#ifdef trc_passive
+      integer, parameter :: i_trc_passive=1,                            &
+     &                      ipasstrc = i_base + i_iso + i_cfc + i_agg   &
+     &                                 + i_nat_dic + 1
+#else
+      integer, parameter :: i_trc_passive=0,                            &
+     &                      ipasstrc = -1
+#endif
 
 ! total number of advected tracers
-      INTEGER, PARAMETER :: nocetra=i_base+i_iso+i_cfc+i_agg+i_nat_dic
+      INTEGER, PARAMETER :: nocetra = i_base + i_iso + i_cfc + i_agg    &
+     &                                + i_nat_dic + i_trc_passive
 
 
 ! ATMOSPHERE
