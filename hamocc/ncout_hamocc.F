@@ -172,6 +172,9 @@ c --- finalize accumulation
       call finlyr(jnatomegaa(iogrp),jdp(iogrp))
       call finlyr(jnatomegac(iogrp),jdp(iogrp))
 #endif
+#ifdef trc_passive
+      call finlyr(jpasstrc(iogrp),jdp(iogrp))
+#endif
 c
 c --- Mask sea floor in mass fluxes
       call msksrf(jcarflx0100(iogrp),k0100)
@@ -248,6 +251,9 @@ c --- Mask sea floor in level data
       call msklvl(jlvlnatph(iogrp),depths)
       call msklvl(jlvlnatomegaa(iogrp),depths)
       call msklvl(jlvlnatomegac(iogrp),depths)
+#endif
+#ifdef trc_passive
+      call msklvl(jlvlpasstrc(iogrp),depths)
 #endif
 c
 c --- Compute log10 of pH
@@ -541,6 +547,10 @@ c --- Store 3d layer fields
       call wrtlyr(jnatomegac(iogrp),LYR_NATOMEGAC(iogrp),1.,0.,cmpflg,  
      .  'natomegac','Natural OmegaC',' ','-')
 #endif
+#ifdef trc_passive
+      call wrtlyr(jpasstrc(iogrp),LYR_PASSTRC(iogrp),1.,0.,cmpflg,
+     .     'passtrc','Passive tracer',' ','-')
+#endif
 c
 c --- Store 3d level fields
       call wrtlvl(jlvldic(iogrp),LVL_DIC(iogrp),rnacc*1e3,0.,cmpflg,      
@@ -662,6 +672,11 @@ c --- Store 3d level fields
       call wrtlvl(jlvlnatomegac(iogrp),LVL_NATOMEGAC(iogrp),
      .  rnacc,0.,cmpflg,'natomegaclvl',
      .  'Natural OmegaC',' ','-')
+#endif
+#ifdef trc_passive
+      call wrtlvl(jlvlpasstrc(iogrp),LVL_PASSTRC(iogrp),
+     .     rnacc,0.,cmpflg,'passtrclvl',
+     .     Passive tracer',' ','-')
 #endif
 c
 c --- Store sediment fields
@@ -835,6 +850,9 @@ c
       call inilyr(jnatomegaa(iogrp),0.)       
       call inilyr(jnatomegac(iogrp),0.)       
 #endif
+#ifdef trc_passive
+      call inilyr(jpasstrc(iogrp),0.)
+#endif
 c
       call inilvl(jlvldic(iogrp),0.)
       call inilvl(jlvlalkali(iogrp),0.)
@@ -893,6 +911,9 @@ c
       call inilvl(jlvlnatph(iogrp),0.)       
       call inilvl(jlvlnatomegaa(iogrp),0.)       
       call inilvl(jlvlnatomegac(iogrp),0.)       
+#endif
+#ifdef trc_passive
+      call inilvl(jlvlpasstrc(iogrp),0.)
 #endif
 c
 #ifndef sedbypass
@@ -1182,6 +1203,10 @@ c --- define 3d layer fields
       call ncdefvar3d(LYR_NATOMEGAC(iogrp),cmpflg,'p','natomegac',
      .  'Natural OmegaC',' ','1',1)
 #endif
+#ifdef trc_passive
+      call ncdefvar3d(LYR_PASSTRC(iogrp),cmpflg,'p',
+     .     'passtrc','Passive tracer',' ','1',1)
+#endif
 c
 c --- define 3d level fields
       call ncdefvar3d(LVL_DIC(iogrp),cmpflg,'p',      
@@ -1291,6 +1316,10 @@ c --- define 3d level fields
      .  'natomegaalvl','Natural OmegaA',' ','1',2)
       call ncdefvar3d(LVL_NATOMEGAC(iogrp),cmpflg,'p',
      .  'natomegaclvl','Natural OmegaC',' ','1',2)
+#endif
+#ifdef trc_passive
+      call ncdefvar3d(LVL_PASSTRC(iogrp),cmpflg,'p',
+     .     'passtrclvl','Passive tracer',' ','1',2)
 #endif
 c
 c --- define sediment fields
